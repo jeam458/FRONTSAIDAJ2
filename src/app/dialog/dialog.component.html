@@ -1,0 +1,21 @@
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+        <div  class="card" fxFlex="auto">
+          <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+            <h2 class="title m-0">Cambiar estado </h2>
+          </div>
+    
+          <div class="px-6 py-4" fxLayout="column">
+              <mat-form-field fxFlex="auto">
+                <mat-label>Estado</mat-label>
+              <mat-select [(ngModel)]="estado" required>
+                <mat-option *ngFor="let item of estados" [value]="item.id" >{{item.name}}</mat-option>
+              </mat-select>
+              </mat-form-field>
+            
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button type="button" (click)="cancelar()">CANCELAR</button>
+              <button color="primary" mat-raised-button (click)="cambioestado()" type="submit">ENVIAR</button>
+            </div>
+          </div>
+        </div>
+      </div>

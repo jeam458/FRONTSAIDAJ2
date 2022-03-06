@@ -1,0 +1,52 @@
+<div class="p-gutter" vexContainer>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+        <div [formGroup]="form"  @fadeInUp class="card" fxFlex="auto">
+          <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+            <h2 class="title m-0">Crear Tarea </h2>
+          </div>
+          
+          <div class="px-6 py-4" fxLayout="column">
+            <mat-form-field>
+              <mat-label >Tarea principal</mat-label>
+              <mat-select formControlName="principal" required>
+                <mat-option *ngFor="let item of Tareas_Principales" [value]="item.id" >{{item.name}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <mat-form-field fxFlex="auto">
+                    <mat-label >Número de expediente</mat-label>
+                    <input formControlName="nombre" type="text" matInput required>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="auto">
+                      <mat-label >Tipo de trabajo</mat-label>
+                      <mat-select formControlName="tipo" multiple required>
+                          <mat-option *ngFor="let item of tipos_tareas" [value]="item.id" >{{item.id}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+            </div>
+            <mat-form-field>
+                <mat-label >Acción a realizar</mat-label>
+                <input formControlName="descripcion" type="text" matInput>
+            </mat-form-field>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+              <mat-form-field fxFlex="auto">
+                <mat-label>Prioridad</mat-label>
+              <mat-select formControlName="prioridad">
+                <mat-option *ngFor="let item of prioridades" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label>Estado</mat-label>
+              <mat-select formControlName="estado" required>
+                <mat-option *ngFor="let item of estados" [value]="item.id" >{{item.name}}</mat-option>
+              </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button type="button" (click)="cancelar()">CANCELAR</button>
+              <button color="primary" mat-raised-button (click)="guardar()" [disabled]="!form.valid"  type="submit">ENVIAR</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

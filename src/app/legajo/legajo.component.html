@@ -1,0 +1,324 @@
+
+<div class="p-gutter" vexContainer>
+
+    <h2 class="title mb-4" fxLayout="row" fxLayoutAlign="start center">
+      <span @scaleIn class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light">
+        <ic-icon [icon]="icDescription" height="20px" width="20px"></ic-icon>
+      </span>
+      <span @fadeInRight class="block">Ingresar Legajo</span>
+    </h2>
+  
+    <div @fadeInUp class="card overflow-hidden">
+        <mat-horizontal-stepper #stepper="matHorizontalStepper" [linear]="false">
+            <ng-template matStepperIcon="edit">
+              <mat-icon [icIcon]="icDoneAll"></mat-icon>
+            </ng-template>
+      
+            <ng-template matStepperIcon="done">
+              <mat-icon [icIcon]="icDoneAll"></mat-icon>
+            </ng-template>
+      
+            <mat-step [stepControl]="form">
+                <form [formGroup]="form">
+                   <ng-template matStepLabel>Datos generales</ng-template>
+                   <h2 class="title m-0"></h2>
+                   <div class="subheading-1">Información relevante del legajo.</div>
+                   <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+                    <div class="subheading-1">Cabecera del legajo.</div>
+                   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label >Tipo de Legajo</mat-label>
+                      <mat-select formControlName="Tipo"  required>
+                          <mat-option *ngFor="let item of tiposlegajo" [value]="item.id" >{{item.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label >Número de Legajo</mat-label>
+                        <input formControlName="NroLegajo" type="text" matInput required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label >Número de Documentos</mat-label>
+                        <input formControlName="NroDocumentos" type="number" matInput required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label >Código</mat-label>
+                        <input formControlName="Codigo" type="text" matInput required>
+                    </mat-form-field>
+                  </div>
+
+                <div class="subheading-1">Lugar de Procedencia.</div>
+                  
+                 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0" >
+                      <mat-form-field fxFlex="auto">
+                        <mat-label >Entidad /DJ</mat-label>
+                        <input formControlName="Entidad" type="text" matInput >
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto" *ngIf="!tipo">
+                        <mat-label >Juzgado</mat-label>
+                        <mat-select formControlName="Juzgado" >
+                            <mat-option *ngFor="let item of depsJuris" [value]="item._id" >{{item.Nombre}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto" *ngIf="tipo">
+                        <mat-label >Unidad de Dirección</mat-label >
+                        <input formControlName="UDireccion" type="text" matInput >
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto" *ngIf="tipo">
+                          <mat-label >Unidad Administrativa</mat-label>
+                          <input formControlName="UAdministrativa" type="text" matInput >
+                      </mat-form-field>  
+                      <mat-form-field fxFlex="auto" *ngIf="tipo">
+                          <mat-label >Unidad Orgánica</mat-label>
+                          <input formControlName="UOrganica" type="text" matInput >
+                      </mat-form-field>
+                 </div>
+                 <div class="subheading-1">Autor y remitente.</div>
+                 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                      <mat-form-field fxFlex="auto">
+                          <mat-label >Autor o Responsable del área de Origen</mat-label>
+                          <input formControlName="Autor" type="text" matInput required>
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto">
+                          <mat-label >Remitido Por</mat-label>
+                          <input formControlName="Remitente" type="text" matInput required>
+                      </mat-form-field>
+                  </div>
+                  <div class="subheading-1">Descripción del Legajo.</div>
+                  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                        <mat-label >Documento</mat-label>
+                        <textarea formControlName="Documento" type="text" matInput required></textarea>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label >Descripción</mat-label>
+                        <textarea formControlName="Descripcion" type="text" matInput required></textarea>
+                    </mat-form-field>
+                  </div>
+                   </div>
+                   <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button (click)="stepper.reset()" [disabled]="form.pristine" color="primary" mat-button type="button">LIMPIAR</button>
+                    <button [disabled]="form.invalid" color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                  </div>
+                </form> 
+            </mat-step>
+
+            <mat-step [stepControl]="expedientesForm">
+              <form [formGroup]="expedientesForm">
+                <ng-template matStepLabel>Expedientes</ng-template>
+                  <h2 class="title m-0">Agregar los expedientes</h2>
+                  <div class="subheading-1">Expedientes que se encuentran dentro del legajo </div>
+                   
+                   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                    <div class="card" fxFlex="auto">
+                      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                        <h2 class="title m-0">Expedientes disponibles</h2>
+                      </div>
+                      <div class="px-12 py-12" fxLayout="column">
+                        <mat-form-field>
+                          <mat-label >Buscar Expediente</mat-label>
+                          <input  (keyup)="applyFilter($event.target.value)" type="text" matInput>
+                        </mat-form-field>
+                      </div>
+                      <div class="px-12 py-12" fxLayout="column">
+                        <mat-table #table [dataSource]="dataSource" matSort>
+                          <ng-container matColumnDef="Expediente">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Expediente </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Dni"> {{row.Expediente}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Tipo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Ruc"> {{row.Materia}} </mat-cell>
+                           </ng-container>
+                          <ng-container matColumnDef="Fecha">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Fecha"> {{row.fecha | date:'dd/MM/yyyy'}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Agregar">
+                            <mat-header-cell *matHeaderCellDef class="column-button"> Agregar </mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="column-button" data-label="Eliminar">  
+                              <button color="warn" (click)="addExpediente(row)" mat-raised-button >Agregar</button>
+                            </mat-cell>
+                           </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColums"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColums;"></mat-row>
+                        </mat-table>
+                  
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                      </div>
+                    </div>
+
+                    <div class="card" fxFlex="auto">
+                      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                        <h2 class="title m-0">Expedientes dentro del Legajo.</h2>
+                      </div>
+                      <div class="px-12 py-12" fxLayout="column">
+                        <mat-table #table1 [dataSource]="dataSource1" matSort>
+                          <ng-container matColumnDef="Expediente">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Expediente </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Dni"> {{row.Expediente}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Tipo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Ruc"> {{row.Materia}} </mat-cell>
+                           </ng-container>
+                          <ng-container matColumnDef="Fecha">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Fecha"> {{row.fecha | date:'dd/MM/yyyy'}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Eliminar">
+                            <mat-header-cell *matHeaderCellDef class="column-button"> Eliminar </mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="column-button" data-label="Eliminar">  
+                              <button color="warn" (click)="eliminarExp(row)" mat-raised-button >Eliminar</button>
+                            </mat-cell>
+                           </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColums1"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColums1;"></mat-row>
+                        </mat-table>
+                  
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button  color="primary" mat-button type="button" matStepperPrevious>ATRAS</button>
+                    <button [disabled]="expedientesInput.length == 0" color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+                  </div>
+              </form>
+            </mat-step>
+
+            <mat-step [stepControl]="filesForm">
+              <form [formGroup]="filesForm"> 
+                <ng-template matStepLabel>Archivos</ng-template>
+                <h2 class="title m-0">Archivos del legajo</h2>
+                <div class="subheading-1">Todos los archivos relacionados al legajo</div>
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                  <div class="card" fxFlex="auto">
+                    <div class="px-12 py-12" fxLayout="column">
+                        <mat-label >Seleccione Archivo(s)</mat-label>
+                        <input type="file" class="form-control" color="primary" name="multiple" (change)="modificarFiles()" ng2FileSelect [uploader]="uploader" multiple  />
+                    </div>
+                  </div>
+                  <div class="card" fxFlex="auto">
+                    <div class="px-12 py-12" fxLayout="column">
+                      Archivos seleccionados: {{ uploader?.queue?.length }}
+                      <mat-table #tableFiles [dataSource]="dataSourceFile">
+                          <ng-container matColumnDef="Nombre">
+                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                            <td mat-cell *matCellDef="let row"> {{row.file.name}} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Tamaño" *ngIf="uploader.options.isHTML5">
+                            <th mat-header-cell *matHeaderCellDef> Tamaño </th>
+                            <td mat-cell *matCellDef="let row"> {{row.file.size/1024/1024 | number:'.2'}} MB</td>
+                          </ng-container>
+                          <ng-container matColumnDef="Proceso" *ngIf="uploader.options.isHTML5">
+                            <th mat-header-cell *matHeaderCellDef> Proceso </th>
+                            <td mat-cell *matCellDef="let row">
+                              <div class="progress">
+                                <div class="determinate" [ngStyle]="{ 'width': row.file.progress + '%' }"></div>
+                             </div>
+                            </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Estado">
+                            <th mat-header-cell *matHeaderCellDef> Estado </th>
+                            <td mat-cell *matCellDef="let row"> 
+                            <span *ngIf="row.file.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                            <span *ngIf="row.file.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                            <span *ngIf="row.file.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                           </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Acciones">
+                            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                            <td mat-cell *matCellDef="let row"> 
+                              <button type="button" color="primary" mat-button
+                              (click)="row.upload()" [disabled]="row.isReady || row.isUploading || row.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span> subir
+                            </button>
+                            <button type="button" color="primary" mat-button
+                              (click)="row.cancel()" [disabled]="!row.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancelar
+                            </button>
+                            <button type="button" color="primary" mat-button
+                              (click)="row.remove()">
+                             <span class="glyphicon glyphicon-trash"></span> eliminar
+                            </button> </td>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayColumsFiles"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayColumsFiles;"></mat-row>
+                      </mat-table>
+                    </div>
+                  </div>
+                </div>
+                
+                
+                <div class="col-md-12">
+                 
+                  <table class="table">
+                    <thead>
+                    <tr>
+                        <th width="50%">Nombre</th>
+                        <th>Tamaño</th>
+                        <th>Proceso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="uploader?.queue?.length">
+                    <tr *ngFor="let item of uploader.queue">
+                        <td data-label="Name"><strong>{{ item?.file?.name }}</strong></td>
+                        <td data-label="Size" *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                        <td data-label="Progress" *ngIf="uploader.options.isHTML5">
+                            <div class="progress" style="margin-bottom: 0;">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                            </div>
+                        </td>
+                        <td data-label="Status" class="text-center">
+                            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                        </td>
+                        <td data-label="Actions" nowrap>
+                            <button type="button" class="btn btn-success btn-xs espacio"
+                                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                <span class="glyphicon glyphicon-upload"></span> subir
+                            </button>
+                            <button type="button" class="btn btn-warning btn-xs espacio"
+                                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                                <span class="glyphicon glyphicon-ban-circle"></span> Cancelar
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs espacio"
+                                    (click)="item.remove()">
+                                <span class="glyphicon glyphicon-trash"></span> emilinar
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+    
+                <div>
+                    <div>
+                      proceso total:
+                        <div class="progress mt-2 mb-3" style="">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success btn-s me-2"
+                            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="glyphicon glyphicon-upload"></span> subir todo
+                    </button>
+                    <button type="button" class="btn btn-warning btn-s me-2"
+                            (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                        <span class="glyphicon glyphicon-ban-circle"></span> cancelar todo
+                    </button>
+                    <button type="button" class="btn btn-danger btn-s"
+                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                        <span class="glyphicon glyphicon-trash"></span> eliminar todo
+                    </button>
+                </div>
+             </div>
+             
+              </form>
+            </mat-step>
+            
+          </mat-horizontal-stepper>
+    </div>  
+</div>

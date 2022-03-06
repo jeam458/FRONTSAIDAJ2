@@ -1,0 +1,174 @@
+<div class="p-gutter" vexContainer>
+
+  <h2 class="title mb-4" fxLayout="row" fxLayoutAlign="start center">
+    <span @scaleIn class="w-10 h-10 rounded-full text-primary mr-3 flex items-center justify-center bg-primary-light">
+      <ic-icon [icon]="icDescription" height="20px" width="20px"></ic-icon>
+    </span>
+    <span @fadeInRight class="block">Crear Expediente</span>
+  </h2>
+
+  <div @fadeInUp class="card overflow-hidden">
+    <mat-horizontal-stepper #stepper="matHorizontalStepper" [linear]="true">
+      <ng-template matStepperIcon="edit">
+        <mat-icon [icIcon]="icDoneAll"></mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="done">
+        <mat-icon [icIcon]="icDoneAll"></mat-icon>
+      </ng-template>
+
+      <mat-step [stepControl]="form">
+        <form [formGroup]="form">
+           <ng-template matStepLabel>Datos generales</ng-template>
+           <h2 class="title m-0">Expediente</h2>
+           <div class="subheading-1">Especificar información del expediente.</div>
+           
+           <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+           <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+            <mat-form-field fxFlex="auto">
+              <mat-label >Juzgado</mat-label>
+              <mat-select formControlName="Juzgado"  required>
+                  <mat-option *ngFor="let item of deps" [value]="item._id" >{{item.Nombre}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+          </div>
+          <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+            <mat-form-field fxFlex="auto">
+                  <mat-label >Materia</mat-label>
+                  <mat-select formControlName="Materia"  required>
+                      <mat-option *ngFor="let item of Especialidades" [value]="item.id" >{{item.name}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label >Motivo</mat-label>
+                <mat-select formControlName="Motivo"  required>
+                    <mat-option *ngFor="let item of Motivos" [value]="item.id" >{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fxLayoutGap.gt-xs="24px">
+              <mat-form-field fxFlex="auto">
+                  <mat-label >Expediente</mat-label>
+                  <input formControlName="Expediente" type="text" matInput required>
+                </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                  <mat-label >Número de expediente</mat-label>
+                  <input formControlName="NroExpediente" type="number" matInput required>
+              </mat-form-field>  
+               <mat-form-field fxFlex="auto">
+                  <mat-label >Año de Expediente</mat-label>
+                  <input formControlName="AnioExpediente" type="number" matInput required>
+                </mat-form-field>
+           </div>
+           </div>
+           <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+            <button (click)="stepper.reset()" [disabled]="form.pristine" color="primary" mat-button type="button">LIMPIAR</button>
+            <button [disabled]="form.invalid" color="primary" mat-raised-button matStepperNext>SIGUIENTE</button>
+          </div>
+        </form> 
+    </mat-step>
+
+    <mat-step [stepControl]="parteform">
+      <form [formGroup]="parteform">
+        <ng-template matStepLabel>Partes</ng-template>
+          <h2 class="title m-0">Partes del expediente</h2>
+          <div class="subheading-1">agregar las partes al expediente.</div>
+           
+           <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+            <mat-form-field fxFlex="auto">
+                <mat-label >Tipo de Documento</mat-label>
+                <mat-select formControlName="TipoDocumento" required>
+                    <mat-option *ngFor="let item of tiposDocumento" [value]="item.id" >{{item.id}}</mat-option>
+                </mat-select>
+            </mat-form-field> 
+             <mat-form-field fxFlex="auto">
+                <mat-label >Documento</mat-label>
+                <input formControlName="Documento" type="text" matInput required>
+              </mat-form-field>
+              
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+              <mat-form-field fxFlex="auto">
+                <mat-label >Nombres</mat-label>
+                <input formControlName="Nombre" type="text" matInput required>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label >Apellido Paterno</mat-label>
+                <input formControlName="ApellidoP" type="text" matInput required>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label >Apellido Materno</mat-label>
+                <input formControlName="ApellidoM" type="text" matInput required>
+              </mat-form-field>
+          </div>
+          </div>
+
+          <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+            <button (click)="stepper.reset()" [disabled]="parteform.pristine" color="primary" mat-button
+                    type="button">Limpiar
+            </button>
+            <button [disabled]="parteform.invalid" (click)="guardarParte()" color="primary" mat-raised-button >agregar parte
+            </button>
+          </div>
+
+          <div class="mt-4" fxLayout="column" fxLayoutGap="8px">
+            <div class="p-gutter" vexContainer>
+              <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                  <div class="card" fxFlex="auto">
+                    <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                      <h2 class="title m-0">Listado de las partes</h2>
+                    </div>
+                    <div class="px-12 py-12" fxLayout="column">
+                      <mat-form-field>
+                          <mat-label >Buscar Parte</mat-label>
+                          <input  (keyup)="applyFilter($event.target.value)" type="text" matInput>
+                      </mat-form-field>
+                    </div>
+                    <div class="px-12 py-12" fxLayout="column">
+                      <mat-table #table [dataSource]="dataSource" matSort>
+                           <ng-container matColumnDef="Documento">
+                           <mat-header-cell *matHeaderCellDef mat-sort-header> Documento </mat-header-cell>
+                           <mat-cell *matCellDef="let row" data-label="Documento"> {{row.Documento}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Nombre">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Nombre"> {{row.Nombre}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Ap">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Apellido Paterno </mat-header-cell>
+                            <mat-cell *matCellDef="let row" data-label="Ap"> {{row.ApellidoP}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Am">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Apellido Materno </mat-header-cell>
+                              <mat-cell *matCellDef="let row" data-label="Am"> {{row.ApellidoM}} </mat-cell>
+                           </ng-container>
+                           <ng-container matColumnDef="Eliminar">
+                            <mat-header-cell *matHeaderCellDef class="column-button"> Eliminar </mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="column-button" data-label="Eliminar">  
+                              <button color="warn" (click)="eliminar(row)" mat-raised-button >Eliminar</button>
+                            </mat-cell>
+                           </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColums"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColums;"></mat-row>
+                        </mat-table>
+                  
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          </div>
+          
+          <div class="actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+            <button  (click)="guardar()" color="primary" mat-raised-button >GUARDAR EXPEDIENTE
+            </button>
+          </div>
+          
+           
+      </form>
+    </mat-step>
+
+    </mat-horizontal-stepper>
+  </div>
+</div>  

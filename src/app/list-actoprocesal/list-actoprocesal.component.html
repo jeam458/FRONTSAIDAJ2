@@ -1,0 +1,51 @@
+<div class="p-gutter" vexContainer>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+        <div class="card" fxFlex="auto">
+          <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+            <h2 class="title m-0">Listado de los actos procesales</h2>
+          </div>
+          <div class="px-12 py-12" fxLayout="column">
+            <!--<mat-form-field fxFlex="auto">
+                <mat-label>Responsable</mat-label>
+              <mat-select [ngModel]="usuario" (ngModelChange)="getTareasCli($event)">
+                <mat-option *ngFor="let item of responsables" [value]="item._id" >{{item.nombres}} {{item.apellidos}}</mat-option>
+              </mat-select>
+              </mat-form-field>-->
+            <mat-form-field>
+                <mat-label >Buscar Acto Procesal</mat-label>
+                <input  (keyup)="applyFilter($event.target.value)" type="text" matInput>
+            </mat-form-field>
+          </div>
+          <div class="px-12 py-12" fxLayout="column">
+            <mat-table #table [dataSource]="dataSource" matSort>
+                 <ng-container matColumnDef="Nombre">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                  <mat-cell *matCellDef="let row" data-label="Nombre"> {{row.Nombre}} </mat-cell>
+                 </ng-container>
+                 <ng-container matColumnDef="Especialidad">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Especialidad </mat-header-cell>
+                  <mat-cell *matCellDef="let row" data-label="Especialidad"> {{Especialidades[buscarEsp(row.Especialidad)].name }} </mat-cell>
+                 </ng-container>
+                 <ng-container matColumnDef="Organo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Organo </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="Organo"> {{Organos[buscarOrgano(row.Organo)].name }} </mat-cell>
+                   </ng-container>
+                <!---<ng-container matColumnDef="Fecha">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+                  <mat-cell *matCellDef="let row" data-label="Fecha"> {{row.fecha | date:'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>-->
+                <ng-container matColumnDef="Eliminar">
+                  <mat-header-cell *matHeaderCellDef class="column-button"> Eliminar </mat-header-cell>
+                  <mat-cell *matCellDef="let row" class="column-button" data-label="Eliminar">  
+                    <button color="warn" (click)="eliminar(row)" mat-raised-button >Eliminar</button>
+                  </mat-cell>
+                 </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColums"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColums;"></mat-row>
+              </mat-table>
+        
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+        </div>
+      </div>
+</div>
